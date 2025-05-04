@@ -6,6 +6,7 @@
 #   - server.example.com -iburst
 #
 ntp_servers:
+  -
 
 # if this is true default pool entries are commented out
 # if this is false default pool entries are left alone
