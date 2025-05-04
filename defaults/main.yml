@@ -1,0 +1,12 @@
+---
+# defaults file for ntp
+#list server(s) to pull time from and settings
+# example:
+# ntp_servers:
+#   - server.example.com -iburst
+#
+ntp_servers:
+
+# if this is true default pool entries are commented out
+# if this is false default pool entries are left alone
+ntp_enable_servers_over_pool: false

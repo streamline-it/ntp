@@ -1,0 +1,12 @@
+---
+- name: ensure service is enabled
+  tags: ntp
+  community.general.sysrc:
+    name: ntpd_enable
+    value: "YES"
+
+- name: ensure service is started
+  tags: ntp
+  ansible.builtin.service:
+    name: "{{ ntp_svc }}"
+    state: started

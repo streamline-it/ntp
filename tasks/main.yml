@@ -1,0 +1,38 @@
+---
+# tasks file for ntp
+- name: include OS specific variables
+  tags: ntp
+  ansible.builtin.vars_files: "vars/{{ ansible_os_family }}"
+
+- name: ensure package is installed if dealing with RHEL
+  when: ansible_os_family == "RedHat"
+  tags: ntp
+  ansible.builtin.pkg:
+    name: ntp_pkg
+    state: present
+
+- name: call task to ensure service is started
+  tags: ntp
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}_start_svc.yml"
+
+- name: ensure config is setup to comment out default pool entries if specified
+  when: ntp_enable_servers_over_pool == true
+  tags: ntp
+  notify: restart ntp
+  loop:
+    "{{ ntp_pool_entries }}"
+  ansible.builtin.lineinfile:
+    path: "{{ ntp_config_filepath }}"
+    regex: "{{ item ]}"
+    line: "#{{ item }}"
+    
+- name: ensure config is setup to add servers if specified
+- name: ensure config is setup to comment out default pool entries if specified
+  when: ntp_enable_servers_over_pool == true
+  tags: ntp
+  notify: restart ntp
+  loop:
+    "{{ ntp_servers }}"
+  ansible.builtin.lineinfile:
+    path: "{{ ntp_config_filepath }}"
+    line: "#{{ item }}"

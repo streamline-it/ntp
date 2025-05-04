@@ -1,0 +1,13 @@
+---
+# used to comment lines out in the config if user chost
+# to use a server instead of a pool
+ntp_pool_entries:
+  - pool 0.freebsd.pool.ntp.org iburst
+  - pool 2.freebsd.pool.ntp.org iburst
+
+ntp_config_filepath: /etc/ntp.conf
+
+# service name
+ntp_svc: ntpd
+
+ntp_pkg: ntp
