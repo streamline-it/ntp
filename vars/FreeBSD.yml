@@ -15,7 +15,7 @@ ntp_config_filepath: "{{ ntp_jail_prepath }}/etc/ntp.conf"
 ntp_svc: ntpd
 
 # used with sysrc to enable ntpd service
-ntp_rc_enable_line: ntpd_enable
+ntp_rc_ntp_enable_line: ntpd_enable
 
 # ntp package name
 ntp_pkg: ntp

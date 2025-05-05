@@ -32,10 +32,14 @@
   ansible.builtin.shell:
     cmd: /usr/sbin/jexec sysrc "{{ ntp_jail_name }} {{ npt_rc_enable_line }}"
 
+- ansible.builtin.debug:
+    var: ntp_ntp_enable_check
+
 - name: ensure service is enabled in the jail
   when: >
-    - ntp_jail_it == true 
-    - ntp_ntp_enable_check['stdout'] == "{{ ntp_rc_enable_line }}: NO"
+    ntp_jail_it == true and
+    ntp_ntp_enable_check is defined and
+    ntp_ntp_enable_check['stdout'] == ntp_rc_enable_line ~ ': NO'
   tags: ntp
   ansible.builtin.shell:
     cmd: /usr/sbin/sysrc -j "{{ ntp_jail_name }}" "{{ ntp_rc_ntp_enable_line }}"'="YES"'

@@ -3,7 +3,7 @@
   ansible.builtin.assert:
     that:
       - ntp_pool_entries is defined
-      - ntp_config_file_path is defined
+      - ntp_config_filepath is defined
       - ntp_svc is defined
       - ntp_pkg is defined
       - ntp_jail_it is defined

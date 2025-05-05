@@ -9,6 +9,7 @@ ntp_pool_entries:
 # will only be used on FreeBSD systems.  Creating to avoid inconsistency errors
 ntp_rc_ntp_enable_line: 
 ntp_jail_prepath: 
+ntp_rc_ntp_enable_line:
 
 # end of FreeBSD variables
 
