@@ -1,0 +1,67 @@
+---
+##################################################
+#
+#  Configure for custom server updates
+#
+#
+##################################################
+
+
+# If configuring for network pool update:
+# wipe out any pool entries and
+# enable the server designation
+   
+- name: ensure config is setup to comment out default pool entries if specified
+  when: ntp_enable_servers_over_pool == true
+  tags: ntp
+  loop:
+    "{{ ntp_pool_entries }}"
+  ansible.builtin.lineinfile:
+    path: "{{ ntp_config_filepath }}"
+    regex: "{{ item }}"
+    line: "#{{ item }}"
+
+- name: ensure config is setup to add servers if specified
+  when: ntp_enable_servers_over_pool == true
+  tags: ntp
+  notify: "restart ntp {{ ansible_os_family }}"
+  loop:
+    "{{ ntp_servers }}"
+  ansible.builtin.lineinfile:
+    path: "{{ ntp_config_filepath }}"
+    line: "{{ item }}"
+
+
+##################################################
+#
+#  Configure for internet pool updates
+#
+#
+##################################################
+
+
+# If configuring for network pool updates:
+# disable server line if it exists and
+# enable network pool lines
+
+- name: ensure config is setup to enable  default pool entries if specified
+  when: ntp_enable_servers_over_pool == false
+  tags: ntp
+  loop:
+    "{{ ntp_pool_entries }}"
+  ansible.builtin.lineinfile:
+    path: "{{ ntp_config_filepath }}"
+    line: "{{ item }}"
+    state: present
+
+- name: ensure config is setup use pool servers, disable custom server if specified
+  when: ntp_enable_servers_over_pool == false
+  tags: ntp
+  notify: "restart ntp {{ ansible_os_family }}"
+  loop:
+    "{{ ntp_servers }}"
+  ansible.builtin.lineinfile:
+    regex: "{{ item }}"
+    path: "{{ ntp_config_filepath }}"
+    line: "#{{ item }}"
+

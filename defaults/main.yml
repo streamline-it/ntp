@@ -11,3 +11,7 @@ ntp_servers:
 # if this is true default pool entries are commented out
 # if this is false default pool entries are left alone
 ntp_enable_servers_over_pool: false
+
+ntp_jail_it: false
+
+ntp_jail_name: 

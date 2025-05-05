@@ -1,12 +1,47 @@
 ---
-- name: ensure service is enabled
+##################################################################
+#
+# host specific
+#
+##################################################################
+
+- name: ensure service is enabled for the host
+  when: ntp_jail_it == false
   tags: ntp
   community.general.sysrc:
-    name: ntpd_enable
+    name: "{{ ntp_rc_ntp_enable_line }}"
     value: "YES"
-
-- name: ensure service is started
+  
+- name: ensure service is started for the host
   tags: ntp
+  when: ntp_jail_it == false
   ansible.builtin.service:
     name: "{{ ntp_svc }}"
     state: started
+
+##################################################################
+#
+# jail specific
+#
+##################################################################
+
+- name: check to see if the ntp is enabled in the rc.conf file
+  tags: ntp
+  register: ntp_ntp_enable_check
+  when: ntp_jail_it == true
+  ansible.builtin.shell:
+    cmd: /usr/sbin/jexec sysrc "{{ ntp_jail_name }} {{ npt_rc_enable_line }}"
+
+- name: ensure service is enabled in the jail
+  when: >
+    - ntp_jail_it == true 
+    - ntp_ntp_enable_check['stdout'] == "{{ ntp_rc_enable_line }}: NO"
+  tags: ntp
+  ansible.builtin.shell:
+    cmd: /usr/sbin/sysrc -j "{{ ntp_jail_name }}" "{{ ntp_rc_ntp_enable_line }}"'="YES"'
+
+- name: ensure service is started in the jail
+  tags: ntp
+  when: ntp_jail_it == true 
+  ansible.builtin.shell:
+    cmd: /usr/sbin/service -j "{{ ntp_jail_name }} {{ ntp_svc }} start"

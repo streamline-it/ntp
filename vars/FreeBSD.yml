@@ -5,9 +5,19 @@ ntp_pool_entries:
   - pool 0.freebsd.pool.ntp.org iburst
   - pool 2.freebsd.pool.ntp.org iburst
 
-ntp_config_filepath: /etc/ntp.conf
+# path to insert in front of the config path
+ntp_jail_prepath:
+
+# path to config file
+ntp_config_filepath: "{{ ntp_jail_prepath }}/etc/ntp.conf"
 
 # service name
 ntp_svc: ntpd
 
+# used with sysrc to enable ntpd service
+ntp_rc_enable_line: ntpd_enable
+
+# ntp package name
 ntp_pkg: ntp
+
+

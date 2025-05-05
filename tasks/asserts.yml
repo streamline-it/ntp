@@ -1,0 +1,33 @@
+---
+- name: ensure variables are defined
+  ansible.builtin.assert:
+    that:
+      - ntp_pool_entries is defined
+      - ntp_config_file_path is defined
+      - ntp_svc is defined
+      - ntp_pkg is defined
+      - ntp_jail_it is defined
+      - ntp_enable_servers_over_pool is defined
+    fail_msg: >
+      "Make sure following variable(s) are defined (
+      ntp_pool_entries, ntp-config_filepath, ntp_svc,
+      ntp_pkg, ntp_jail_it)"
+
+- name: ensure ntp_servers is defined if not using internet pool
+  when: 
+    - ntp_enable_servers_over_pool == true
+  ansible.builtin.assert:
+    that: ntp_servers is defined
+    fail_msg: "You need to specify a server for ntp_servers if not using the internet pool to sync from."
+
+- name: ensure FreeBSD-specific variables are defined if enabling service in a jail
+  when: 
+    - ansible_os_family == "FreeBSD"
+    - ntp_jail_it == true
+  ansible.builtin.assert:
+    that:
+      - ntp_jail_prepath is defined
+      - ntp_jail_name is defined
+    fail_msg: >
+      "Make sure following variable(s) are defined (
+      ntp_jail_prepath, ntp_jail_name)"
