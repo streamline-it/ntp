@@ -15,3 +15,15 @@ ntp_enable_servers_over_pool: false
 ntp_jail_it: false
 
 ntp_jail_name: 
+
+# The following are FreeBSD Jail specific, don't change 
+# values if working with a RHEL host or if on
+# a FreeBSD system and you're not using jails
+
+# The jail prepath for the jail host.
+# Ex if the jail is under /jails/jail_host
+# Make sure to add the tailing backslash.  The ntp_config_filepath
+# is going to be used to follow this variable
+# ntp_jail_prepath: /jails/jail_host/ 
+
+ntp_jail_prepath:

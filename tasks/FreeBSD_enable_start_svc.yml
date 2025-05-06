@@ -29,23 +29,32 @@
   tags: ntp
   register: ntp_ntp_enable_check
   when: ntp_jail_it == true
+  failed_when: ntp_ntp_enable_check['rc'] > 1
+  changed_when: false
   ansible.builtin.shell:
-    cmd: /usr/sbin/jexec sysrc "{{ ntp_jail_name }} {{ npt_rc_enable_line }}"
-
-- ansible.builtin.debug:
-    var: ntp_ntp_enable_check
+    cmd: "/usr/sbin/sysrc -j {{ ntp_jail_name }} {{ ntp_rc_ntp_enable_line }}"
 
 - name: ensure service is enabled in the jail
   when: >
     ntp_jail_it == true and
     ntp_ntp_enable_check is defined and
-    ntp_ntp_enable_check['stdout'] == ntp_rc_enable_line ~ ': NO'
+    ntp_ntp_enable_check['stdout'] == ntp_rc_ntp_enable_line ~ ': NO'
   tags: ntp
   ansible.builtin.shell:
     cmd: /usr/sbin/sysrc -j "{{ ntp_jail_name }}" "{{ ntp_rc_ntp_enable_line }}"'="YES"'
 
+- name: check to see if service is already running in the jail
+  tags: ntp
+  register: ntp_service_status
+  when: ntp_jail_it == true 
+  changed_when: false
+  ansible.builtin.shell:
+    cmd: "/usr/sbin/service -j {{ ntp_jail_name }} {{ ntp_svc }} status"
+
 - name: ensure service is started in the jail
   tags: ntp
-  when: ntp_jail_it == true 
+  when: >
+    ntp_jail_it == true and
+    'ntpd is running' not in ntp_service_status['stdout']
   ansible.builtin.shell:
-    cmd: /usr/sbin/service -j "{{ ntp_jail_name }} {{ ntp_svc }} start"
+    cmd: "/usr/sbin/service -j {{ ntp_jail_name }} {{ ntp_svc }} start"
