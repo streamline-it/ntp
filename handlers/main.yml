@@ -1,6 +1,6 @@
 ---
 # handlers file for ntp
-- name: restart service (RHEL service)
+- name: restart ntp on RedHat
   when: >
     - ansible_os_family == "RedHat"
     - ansible_distribution_major_version == "6"
@@ -9,7 +9,7 @@
     name: "{{ ntp_svc }}"
     state: restarted
 
-- name: restart service (RHEL systemctl)
+- name: restart ntp on RedHat
   when: >
     - ansible_os_family == "RedHat"
     - ansible_distribution_major_version == "6"
@@ -18,7 +18,7 @@
     name: "{{ ntp_svc }}"
     state: restarted
 
-- name: restart service (FreeBSD)
+- name: restart ntp on FreeBSD
   when: ansible_os_family == "FreeBSD"
   tags: ntp
   ansible.builtin.service:

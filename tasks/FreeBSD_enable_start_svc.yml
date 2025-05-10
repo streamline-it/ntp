@@ -41,7 +41,7 @@
     ntp_ntp_enable_check['stdout'] == ntp_rc_ntp_enable_line ~ ': NO'
   tags: ntp
   ansible.builtin.shell:
-    cmd: /usr/sbin/sysrc -j "{{ ntp_jail_name }}" "{{ ntp_rc_ntp_enable_line }}"'=YES'
+    cmd: /usr/sbin/sysrc -j "{{ ntp_jail_name }}" "{{ ntp_rc_ntp_enable_line }}=YES"
 
 - name: check to see if service is already running in the jail
   tags: ntp
