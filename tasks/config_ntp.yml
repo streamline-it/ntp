@@ -31,6 +31,15 @@
     path: "{{ ntp_jail_prepath }}{{ ntp_config_filepath }}"
     line: "{{ item }}"
 
+- name: ensure config is restrict access
+  when: ntp_restrict_line is defined
+  tags: ntp
+  notify: "restart ntp on {{ ansible_os_family }}"
+  loop:
+    "{{ ntp_restrict_lines }}"
+  ansible.builtin.lineinfile:
+    path: "{{ ntp_jail_prepath }}{{ ntp_config_filepath }}"
+    line: "{{ item }}"
 
 ##################################################
 #
@@ -65,3 +74,13 @@
     path: "{{ ntp_jail_prepath }}{{ ntp_config_filepath }}"
     line: "#{{ item }}"
 
+- name: ensure config is restictions are setup
+  when: ntp_restrict_lines is defined
+  tags: ntp
+  notify: "restart ntp on {{ ansible_os_family }}"
+  loop:
+    "{{ ntp_restrict_lines }}"
+  ansible.builtin.lineinfile:
+    regex: "{{ item }}"
+    path: "{{ ntp_jail_prepath }}{{ ntp_config_filepath }}"
+    line: "{{ item }}"

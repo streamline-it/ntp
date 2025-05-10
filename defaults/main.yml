@@ -27,3 +27,7 @@ ntp_jail_name:
 # ntp_jail_prepath: /jails/jail_host/ 
 
 ntp_jail_prepath:
+
+# setup restrictions for ntp
+ntp_restict_lines:
+  -
