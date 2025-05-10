@@ -20,4 +20,5 @@
   ansible.builtin.include_tasks: "{{ ansible_os_family }}_enable_start_svc.yml"
    
 - name: call task(s) to configure the ntp service
+  tags: ntp
   ansible.builtin.include_tasks: config_ntp.yml
