@@ -1,7 +1,6 @@
 ---
 # tasks file for ntp
 - name: include OS specific variables
-  tags: ntp
   ansible.builtin.include_vars: 
     file: "vars/{{ ansible_os_family }}.yml"
 
@@ -10,15 +9,12 @@
 
 - name: ensure package is installed if dealing with RHEL
   when: ansible_os_family == "RedHat"
-  tags: ntp
   ansible.builtin.package:
     name: ntp_pkg
     state: present
 
 - name: call task to ensure service is started
-  tags: ntp
   ansible.builtin.include_tasks: "{{ ansible_os_family }}_enable_start_svc.yml"
    
 - name: call task(s) to configure the ntp service
-  tags: ntp
   ansible.builtin.include_tasks: config_ntp.yml

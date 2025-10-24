@@ -7,13 +7,11 @@
 
 - name: ensure service is enabled for the host
   when: ntp_jail_it == false
-  tags: ntp
   community.general.sysrc:
     name: "{{ ntp_rc_ntp_enable_line }}"
     value: YES
   
 - name: ensure service is started for the host
-  tags: ntp
   when: ntp_jail_it == false
   ansible.builtin.service:
     name: "{{ ntp_svc }}"
@@ -26,7 +24,6 @@
 ##################################################################
 
 - name: check to see if the ntp is enabled in the rc.conf file
-  tags: ntp
   register: ntp_ntp_enable_check
   when: ntp_jail_it == true
   failed_when: ntp_ntp_enable_check['rc'] > 1
@@ -39,12 +36,10 @@
     ntp_jail_it == true and
     ntp_ntp_enable_check is defined and
     ntp_ntp_enable_check['stdout'] == ntp_rc_ntp_enable_line ~ ': NO'
-  tags: ntp
   ansible.builtin.shell:
     cmd: /usr/sbin/sysrc -j "{{ ntp_jail_name }}" "{{ ntp_rc_ntp_enable_line }}=YES"
 
 - name: check to see if service is already running in the jail
-  tags: ntp
   register: ntp_service_status
   when: ntp_jail_it == true 
   failed_when: ntp_service_status['rc'] > 1
@@ -53,7 +48,6 @@
     cmd: "/usr/sbin/service -j {{ ntp_jail_name }} {{ ntp_svc }} status"
 
 - name: ensure service is started in the jail
-  tags: ntp
   when: >
     ntp_jail_it == true and
     'ntpd is running' not in ntp_service_status['stdout']

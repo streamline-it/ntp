@@ -1,7 +1,6 @@
 ---
 - name: ensure service is started (service)
   when: ansible_distribution_major_version == "6"
-  tags: ntp
   ansible.builtin.service:
     name: "{{ ntp_svc }}"
     enabled: true
@@ -9,7 +8,6 @@
 
 - name: ensure service is started (systemd)
   when: ansible_distribution_major_version != "6"
-  tags: ntp
   ansible.builtin.service:
   ansible.builtin.systemd:
     name: "{{ ntp_svc }}"

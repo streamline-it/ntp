@@ -13,7 +13,6 @@
    
 - name: ensure config is setup to comment out default pool entries if specified
   when: ntp_enable_servers_over_pool == true
-  tags: ntp
   loop:
     "{{ ntp_pool_entries }}"
   ansible.builtin.lineinfile:
@@ -23,7 +22,6 @@
 
 - name: ensure config is setup to add servers if specified
   when: ntp_enable_servers_over_pool == true
-  tags: ntp
   notify: "restart ntp on {{ ansible_os_family }}"
   loop:
     "{{ ntp_servers }}"
@@ -33,7 +31,6 @@
 
 - name: ensure config is restrict access
   when: ntp_restrict_line is defined
-  tags: ntp
   notify: "restart ntp on {{ ansible_os_family }}"
   loop:
     "{{ ntp_restrict_lines }}"
@@ -55,7 +52,6 @@
 
 - name: ensure config is setup to enable  default pool entries if specified
   when: ntp_enable_servers_over_pool == false
-  tags: ntp
   loop:
     "{{ ntp_pool_entries }}"
   ansible.builtin.lineinfile:
@@ -65,7 +61,6 @@
 
 - name: ensure config is setup use pool servers, disable custom server if specified
   when: ntp_enable_servers_over_pool == false
-  tags: ntp
   notify: "restart ntp on {{ ansible_os_family }}"
   loop:
     "{{ ntp_servers }}"
@@ -76,7 +71,6 @@
 
 - name: ensure config is restictions are setup
   when: ntp_restrict_lines is defined
-  tags: ntp
   notify: "restart ntp on {{ ansible_os_family }}"
   loop:
     "{{ ntp_restrict_lines }}"
