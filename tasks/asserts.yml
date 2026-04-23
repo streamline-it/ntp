@@ -11,8 +11,9 @@
       - ntp_pkg is defined
       - ntp_pkg is truthy
       - ntp_jail_it is defined
+      - ntp_jail_it == true or ntp_jail_it == false 
       - ntp_enable_servers_over_pool is defined
-      - ntp_enable_servers_over_pool is truthy
+      - ntp_enable_servers_over_pool == true or ntp_enable_servers_over_pool == false
     fail_msg: >
       "Make sure following variable(s) are defined (
       ntp_pool_entries, ntp-config_filepath, ntp_svc,
