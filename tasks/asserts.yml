@@ -3,11 +3,16 @@
   ansible.builtin.assert:
     that:
       - ntp_pool_entries is defined
+      - ntp_pool_entries is truthy
       - ntp_config_filepath is defined
+      - ntp_config_filepath is truthy
       - ntp_svc is defined
+      - ntp_svc is truthy
       - ntp_pkg is defined
+      - ntp_pkg is truthy
       - ntp_jail_it is defined
       - ntp_enable_servers_over_pool is defined
+      - ntp_enable_servers_over_pool is truthy
     fail_msg: >
       "Make sure following variable(s) are defined (
       ntp_pool_entries, ntp-config_filepath, ntp_svc,
@@ -27,7 +32,9 @@
   ansible.builtin.assert:
     that:
       - ntp_jail_prepath is defined
+      - ntp_jail_prepath is truthy
       - ntp_jail_name is defined
+      - ntp_jail_name is truthy
     fail_msg: >
       "Make sure following variable(s) are defined (
       ntp_jail_prepath, ntp_jail_name)"
