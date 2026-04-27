@@ -68,13 +68,36 @@ None.
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Configure host example:
 
-    - hosts: servers
-      vars:
-        ntp_enable_servers_over_pool: false
-      roles:
-         - ntp
+- name: test ntp role for the host
+  hosts: node8.freebsd13.example.com
+  become: true
+
+  vars:
+
+    ntp_jail_it: false
+
+  roles:
+
+    - name: ntp
+
+Configure a jail example:
+
+- name: test ntp role for the jail
+  hosts: node8.freebsd13.example.com
+  become: true
+
+  vars:
+
+
+    ntp_jail_it: true
+    ntp_jail_name: jp2_samba
+    ntp_jail_prepath: /jails/jp2_samba
+
+  roles:
+
+    - name: ntp
 
 License
 -------
